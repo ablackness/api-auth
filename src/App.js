@@ -28,27 +28,60 @@ class Home extends Component {
   constructor() {
     super()
 
+    this.state = {
+      access_token: null,
+      expired: false,
+      created_at: '',
+      expiry_time: 86400
+    }
+
     this.showLock = this.showLock.bind(this);
     this.makeAxiosCall = this.makeAxiosCall.bind(this);
+    this.makePostCall = this.makePostCall.bind(this);
+    this.authorizeClient = this.authorizeClient.bind(this);
+
   }
 
   showLock() {
     this.props.lock.show();
   }
 
-  makeAxiosCall() {
-    console.log('axios call');
-    var access_token = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJVWTBPRUl6UTBJMU1qTTJOMFF5TURJNE1USkZRMFV5UkRWRE1USkdNREl4UkVJM05FWTVOZyJ9.eyJpc3MiOiJodHRwczovL2NvZGVibGFjay5hdXRoMC5jb20vIiwic3ViIjoidmd5UFBZTTRDVjNPUFVkOTBiaXhCZDFhYU9yVVNVWW1AY2xpZW50cyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImlhdCI6MTUxMjUyNzY5NywiZXhwIjoxNTEyNjE0MDk3LCJzY29wZSI6IndyaXRlOmluZm8iLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.y8N2B3i8pbl9oBpFUJlcD43gfjizieA492p6-vWg32EnqWZprsh9lVIWasirNXt4FZwudkvISeeFoXZbTV36qxP6pxtvM-HxuXN7W-FUhIpVn9RiFQ8wcNfC8dJFV9NpDi9gixFV0bf5DItfTFYmMSvtip_bw3i5x3RYaUZaYPG_NFQgZHUuu9G_sFXGGSeqZd_aTBAe42XKCGgknJVkpWLgtd8uxRNygNZn55854mbYexsk_d5acrCIefJaATxA0saTRH6FcZKz8S0MVs65QCPAG2BsaofzjKA9CBRSCp5VARVCuQY77l6CXKLubRgs95LtpnU7pviBxnDgnb8e5g';  
-    // axios.get('http://localhost:8080/api/info', {headers: {Authorization: access_token}})
-    //   .then(response => {
-    //     console.log(response);
-    //   })
-    axios.post('http://localhost:8080/api/info', {name: 'something else', time: 'later'}, {headers: {Authorization: access_token}})
-      .then(response => {
-        console.log(response);
+  authorizeClient() {
+    const now = new Date().getTime() / 1000;
+    console.log(now - this.state.created_at);
+    if (!this.state.access_token || (now - this.state.created_at > this.state.expiry_time)) {
+      console.log('token is invalid, getting new token');
+      axios.post('https://codeblack.auth0.com/oauth/token', {
+        "audience": "http://localhost:8080",
+        "grant_type": "client_credentials",
+        "client_id": "vgyPPYM4CV3OPUd90bixBd1aaOrUSUYm",
+        "client_secret": "iV22eseuOfTKg3CcEod8F2psTVQraFc4LH3FLhiEp4RlhkiDnFZcEQBbsT9i_lIU"
       })
+      .then( response => {
+        this.setState({
+          access_token: response.data.access_token,
+          created_at: new Date().getTime() / 1000
+        })
+      });
+    } else (console.log('token is still valid: ', this.state.access_token))
+
+    // this.state.access_token ? console.log('token exists', this.state.access_token) : console.log('Token doesn\'t exist or is invalid, please request a token')
   }
 
+  makeAxiosCall() {
+    axios.get('http://localhost:8080/api/info', {headers: {Authorization: 'Bearer ' + this.state.access_token}})
+    .then(response => {
+      console.log(response);
+    })
+  }
+  
+  makePostCall() {
+    console.log('post');
+    axios.post('http://localhost:8080/api/info', {name: 'something else', time: 'later'}, {headers: {Authorization: 'Bearer ' + this.state.access_token}})
+    .then(response => {
+      console.log(response);
+    })
+  }
   render() {
     return (
       <div className="App">
@@ -59,7 +92,9 @@ class Home extends Component {
         <p className="App-intro">
           To get started, edit <code>src/App.js</code> and save to reload.
         </p>
-        <button onClick={this.makeAxiosCall}>Click to Login</button>
+        <button onClick={this.authorizeClient}>Click to Login</button>
+        <button onClick={this.makeAxiosCall}>Make get call</button>
+        <button onClick={this.makePostCall}>Make post call</button>
       </div>
     )
   }

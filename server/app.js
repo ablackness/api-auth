@@ -7,7 +7,7 @@ const jwtAuthz = require('express-jwt-authz');
 const cors = require('cors');
 
 const app = express();
-var access_token = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJVWTBPRUl6UTBJMU1qTTJOMFF5TURJNE1USkZRMFV5UkRWRE1USkdNREl4UkVJM05FWTVOZyJ9.eyJpc3MiOiJodHRwczovL2NvZGVibGFjay5hdXRoMC5jb20vIiwic3ViIjoidmd5UFBZTTRDVjNPUFVkOTBiaXhCZDFhYU9yVVNVWW1AY2xpZW50cyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImlhdCI6MTUxMjUyNzY5NywiZXhwIjoxNTEyNjE0MDk3LCJzY29wZSI6IndyaXRlOmluZm8iLCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.y8N2B3i8pbl9oBpFUJlcD43gfjizieA492p6-vWg32EnqWZprsh9lVIWasirNXt4FZwudkvISeeFoXZbTV36qxP6pxtvM-HxuXN7W-FUhIpVn9RiFQ8wcNfC8dJFV9NpDi9gixFV0bf5DItfTFYmMSvtip_bw3i5x3RYaUZaYPG_NFQgZHUuu9G_sFXGGSeqZd_aTBAe42XKCGgknJVkpWLgtd8uxRNygNZn55854mbYexsk_d5acrCIefJaATxA0saTRH6FcZKz8S0MVs65QCPAG2BsaofzjKA9CBRSCp5VARVCuQY77l6CXKLubRgs95LtpnU7pviBxnDgnb8e5g';
+var access_token = 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImtpZCI6IlJVWTBPRUl6UTBJMU1qTTJOMFF5TURJNE1USkZRMFV5UkRWRE1USkdNREl4UkVJM05FWTVOZyJ9.eyJpc3MiOiJodHRwczovL2NvZGVibGFjay5hdXRoMC5jb20vIiwic3ViIjoidmd5UFBZTTRDVjNPUFVkOTBiaXhCZDFhYU9yVVNVWW1AY2xpZW50cyIsImF1ZCI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MCIsImlhdCI6MTUxMzEwMjEzNywiZXhwIjoxNTEzMTg4NTM3LCJndHkiOiJjbGllbnQtY3JlZGVudGlhbHMifQ.fiQ2QKANbVGYoama99aX2obIlp-Xu0diG8FoYnChZhLMKQzz5lwQFIfA79rPHl51UlsZ_LPRsbZxUpZRjZ3T3LvuzrwDxGzEzXYFJ4ODzUZ9lshWuVnfNxzCCVx5PwL7Cjjo6oJptEuzdNwR-hMh3HeBvqgXe_s7uxRMyjqc4F-1JcxZ9cCjmIlWzlpdD2ftGPTfUhBSXe4EM4TAXZIKrDwIu4cUge22anfxytURMwFiItn59NrOKQPbvgPVbvGgfLonVfehfECKsFz8UUFtcABgC4gWIERDp8-8OtnQB8iF-YaouptXRW1vAZwti1Gmsl_mox7gv2NAWfWJ00dSWQ';
 
 const checkJwt = jwt({
     // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
@@ -45,7 +45,6 @@ var info = {};
 
 app.get('/api/info', checkJwt, jwtAuthz(['read:info']), function(req, res) {
     console.log(access_token, req.headers.Authorization);
-    // req.headers['Authorization'] = access_token; 
     res.json(info);
 })
 
