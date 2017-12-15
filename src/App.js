@@ -71,7 +71,7 @@ class Home extends Component {
   }
 
   makeAxiosCall() {
-    axios.get('https://ab-auth0-test/api/info', {headers: {Authorization: 'Bearer ' + this.state.access_token}})
+    axios.get('https://ab-auth0-test.herokuapp.com/api/info', {headers: {Authorization: 'Bearer ' + this.state.access_token}})
     .then(response => {
       console.log(response);
       this.setState({
@@ -82,7 +82,7 @@ class Home extends Component {
   
   makePostCall() {
     console.log('post');
-    axios.post('https://ab-auth0-test/api/info', {name: 'something else', time: 'later'}, {headers: {Authorization: 'Bearer ' + this.state.access_token}})
+    axios.post('https://ab-auth0-test.herokuapp.com/api/info', {name: 'something else', time: 'later'}, {headers: {Authorization: 'Bearer ' + this.state.access_token}})
     .then(response => {
       console.log(response);
     })
