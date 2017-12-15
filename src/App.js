@@ -57,8 +57,8 @@ class Home extends Component {
       axios.post('https://codeblack.auth0.com/oauth/token', {
         "audience": "http://localhost:8080",
         "grant_type": "client_credentials",
-        "client_id": process.env.CLIENT_ID,
-        "client_secret": process.env.CLIENT_SECRET
+        "client_id": 'vgyPPYM4CV3OPUd90bixBd1aaOrUSUYm',
+        "client_secret": 'iV22eseuOfTKg3CcEod8F2psTVQraFc4LH3FLhiEp4RlhkiDnFZcEQBbsT9i_lIU'
       })
       .then( response => {
         this.setState({
