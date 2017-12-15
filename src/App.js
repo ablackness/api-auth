@@ -32,13 +32,15 @@ class Home extends Component {
       access_token: null,
       expired: false,
       created_at: '',
-      expiry_time: 86400
+      expiry_time: 86400,
+      outputText: ['Text will appear here']
     }
 
     this.showLock = this.showLock.bind(this);
     this.makeAxiosCall = this.makeAxiosCall.bind(this);
     this.makePostCall = this.makePostCall.bind(this);
     this.authorizeClient = this.authorizeClient.bind(this);
+    this.mapOverData = this.mapOverData.bind(this);
 
   }
 
@@ -54,8 +56,8 @@ class Home extends Component {
       axios.post('https://codeblack.auth0.com/oauth/token', {
         "audience": "http://localhost:8080",
         "grant_type": "client_credentials",
-        "client_id": "vgyPPYM4CV3OPUd90bixBd1aaOrUSUYm",
-        "client_secret": "iV22eseuOfTKg3CcEod8F2psTVQraFc4LH3FLhiEp4RlhkiDnFZcEQBbsT9i_lIU"
+        "client_id": process.env.CLIENT_ID,
+        "client_secret": process.env.CLIENT_SECRET
       })
       .then( response => {
         this.setState({
@@ -69,19 +71,31 @@ class Home extends Component {
   }
 
   makeAxiosCall() {
-    axios.get('http://localhost:8080/api/info', {headers: {Authorization: 'Bearer ' + this.state.access_token}})
+    axios.get('https://ab-auth0-test/api/info', {headers: {Authorization: 'Bearer ' + this.state.access_token}})
     .then(response => {
       console.log(response);
+      this.setState({
+        outputText: response.data
+      }) 
     })
   }
   
   makePostCall() {
     console.log('post');
-    axios.post('http://localhost:8080/api/info', {name: 'something else', time: 'later'}, {headers: {Authorization: 'Bearer ' + this.state.access_token}})
+    axios.post('https://ab-auth0-test/api/info', {name: 'something else', time: 'later'}, {headers: {Authorization: 'Bearer ' + this.state.access_token}})
     .then(response => {
       console.log(response);
     })
   }
+
+  mapOverData(data) {
+    return (
+      data.map( item => {
+        return <li key={item}>{item}</li>
+      })
+    )
+  }
+
   render() {
     return (
       <div className="App">
@@ -95,6 +109,9 @@ class Home extends Component {
         <button onClick={this.authorizeClient}>Click to Login</button>
         <button onClick={this.makeAxiosCall}>Make get call</button>
         <button onClick={this.makePostCall}>Make post call</button>
+        <h4>Output will appear below</h4>
+        <ul>{this.mapOverData(this.state.outputText)}</ul>
+        
       </div>
     )
   }
