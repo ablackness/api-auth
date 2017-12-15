@@ -51,6 +51,7 @@ class Home extends Component {
   authorizeClient() {
     const now = new Date().getTime() / 1000;
     console.log(now - this.state.created_at);
+    console.log(process.env.CLIENT_ID);
     if (!this.state.access_token || (now - this.state.created_at > this.state.expiry_time)) {
       console.log('token is invalid, getting new token');
       axios.post('https://codeblack.auth0.com/oauth/token', {
