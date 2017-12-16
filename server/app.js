@@ -37,7 +37,7 @@ function readPromise() {
       console.log('Reading rows from the Table...');
   
       var request = new Request(
-          'SELECT * FROM TTadmin.user;',
+          'SELECT * FROM TTadmin.[user];',
           function(err, rowCount, rows) {
           if (err) {
               console.log(err);
