@@ -31,6 +31,58 @@ connection.on('connect', function(err) {
     // executeStatement();
   }
 });
+
+function employeeByIdPromise(id) {
+  return new Promise( (resolve, reject) => {
+    console.log('Getting employee by ID...');
+
+    var request = new Request(
+      'SELECT * FROM TTadmin.employee WHERE EmployeeID = ' + id + ';',
+      function(err, rowCount, rows) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(rowCount + ' row(s) returned');
+            console.log(null);
+        }
+      });
+
+      var requestPromise = new Promise ( (res, rej) => {
+        var results = [];
+        var result = {}
+        request.on('row', function(columns) {
+          console.log(columns);
+          var j;
+          columns.forEach(function(column, i) {
+              j = i;
+              if (column.value === null) {
+                  console.log('NULL');
+              } else {
+                  // result += column.value + " ";
+                  result[column.metadata.colName] = column.value;
+              }
+          });
+          console.log(result);
+          results.push(result);
+          result = {};
+          console.log(results);
+          if (j === columns.length - 1) {
+            res(results);
+          }
+        });
+        
+      })
+
+      requestPromise.then( info => {
+        console.log('request promise',info);
+        resolve(info);
+      })
+      
+      // Execute SQL statement
+      connection.execSql(request);
+  })
+}
+
 function readPromise() {
   return new Promise( (resolve, reject) => {
     // function Read(callback) {
@@ -123,7 +175,16 @@ app.get('/', function(req, res) {
 })
 var info = {};
 
-app.get('/api/info', checkJwt, jwtAuthz(['read:info']), function(req, res) {   
+app.get('/api/employee/:id', checkJwt, jwtAuthz(['read:info']), function(req, res) {
+  var employeePromise = employeeByIdPromise(req.params.id);
+
+  employeePromise.then( e => {
+    console.log(e);
+    res.send(e);
+  })
+})
+
+app.get('/api/employees', checkJwt, jwtAuthz(['read:info']), function(req, res) {   
     var infoPromise = readPromise();
 
     infoPromise.then( info => {
