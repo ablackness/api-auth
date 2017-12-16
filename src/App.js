@@ -65,6 +65,7 @@ class Home extends Component {
           access_token: response.data.access_token,
           created_at: new Date().getTime() / 1000
         })
+        alert('This client now has access to the API');
       });
     } else (console.log('token is still valid: ', this.state.access_token))
 
@@ -78,6 +79,8 @@ class Home extends Component {
       this.setState({
         outputText: response.data
       }) 
+    }).catch( err => {
+      alert(err);
     })
   }
   
