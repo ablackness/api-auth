@@ -80,7 +80,7 @@ class Home extends Component {
         outputText: response.data
       }) 
     }).catch( err => {
-      alert(err);
+      alert(err, 'Unauthorized');
     })
   }
   
