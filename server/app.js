@@ -50,7 +50,8 @@ function readPromise() {
       // var result = "";
       
       var requestPromise = new Promise ( (res, rej) => {
-        var results = {};
+        var results = [];
+        var result = {}
         request.on('row', function(columns) {
           console.log(columns);
           var j;
@@ -59,15 +60,14 @@ function readPromise() {
               if (column.value === null) {
                   console.log('NULL');
               } else {
-                  result += column.value + " ";
-                  results[column.metadata.colName] = column.value;
+                  // result += column.value + " ";
+                  result[column.metadata.colName] = column.value;
               }
           });
           console.log(result);
-          // results.push(result);
-          
+          results.push(result);
+          result = {};
           console.log(results);
-          result = "";
           if (j === columns.length - 1) {
             res(results);
           }
