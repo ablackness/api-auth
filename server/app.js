@@ -52,6 +52,7 @@ function readPromise() {
       var requestPromise = new Promise ( (res, rej) => {
         var results = [];
         request.on('row', function(columns) {
+          console.log(columns);
           var j;
           columns.forEach(function(column, i) {
               j = i;
