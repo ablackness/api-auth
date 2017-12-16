@@ -37,7 +37,7 @@ function employeeByIdPromise(id) {
     console.log('Getting employee by ID...');
 
     var request = new Request(
-      'SELECT * FROM TTadmin.employee WHERE EmployeeID = ' + id + ';',
+      'exec ttAdmin.GetEmployeeByID ' + id + ';',
       function(err, rowCount, rows) {
         if (err) {
             console.log(err);
@@ -89,7 +89,7 @@ function readPromise() {
       console.log('Reading rows from the Table...');
   
       var request = new Request(
-          'SELECT * FROM TTadmin.employee;',
+          'exec ttAdmin.GetEmployees;',
           function(err, rowCount, rows) {
           if (err) {
               console.log(err);
