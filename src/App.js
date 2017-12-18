@@ -94,7 +94,7 @@ class Home extends Component {
       companyId: 1
     }
 
-    axios.post('https://ab-auth0-test.herokuapp.com/employee/add', employee, {headers: {Authorization: 'Bearer ' + this.state.access_token}})
+    axios.post('https://ab-auth0-test.herokuapp.com/api/employee/add', employee, {headers: {Authorization: 'Bearer ' + this.state.access_token}})
     .then(response => {
       console.log(response);
     })
