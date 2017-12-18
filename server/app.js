@@ -35,7 +35,7 @@ connection.on('connect', function(err) {
 function stringifyEmployeeParameters(employee) {
   var parameters = '';
   for (key in employee) {
-    parameters = parameters + employee[key] + ' ';
+    parameters = parameters + employee[key] + ', ';
   }
   console.log(parameters);
   return parameters;
@@ -45,7 +45,7 @@ function addEmployeePromise(employee) {
   return new Promise ( (resolve, reject) => {
 
     var request = new Request(
-      'exec ttAdmin.AddEmployee ' + stringifyEmployeeParameters(employee) + ';',
+      'exec ttAdmin.AddEmployee ' + "'m', 'b', 'test', 9.28, 1;",//stringifyEmployeeParameters(employee) + ';',
       function(err, rowCount, rows) {
         if (err) {
             console.log(err);
