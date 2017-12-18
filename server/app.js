@@ -45,7 +45,7 @@ function addEmployeePromise(employee) {
   return new Promise ( (resolve, reject) => {
 
     var request = new Request(
-      'exec ttAdmin.addEmployee ' + stringifyEmployeeParameters(employee) + ';',
+      'exec ttAdmin.AddEmployee ' + stringifyEmployeeParameters(employee) + ';',
       function(err, rowCount, rows) {
         if (err) {
             console.log(err);
@@ -221,7 +221,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
-// app.use(cors);
+//add middleware
 app.use(function(req, res, next) {
     res.setHeader('Access-Control-Allow-Headers', "Origin, X-Requested-With, Content-Type, Accept, Authorization");
     res.setHeader("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
