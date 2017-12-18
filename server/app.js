@@ -32,18 +32,21 @@ connection.on('connect', function(err) {
   }
 });
 
-function stringifyEmployeeParameters(employee) {
-  var parameters = '';
-  for (key in employee) {
-    parameters = parameters + employee[key] + ', ';
-  }
-  console.log(parameters);
-  return parameters;
-}
+// function stringifyEmployeeParameters(employee) {
+//   var parameters = '';
+//   for (key in employee) {
+//     if (typeof employee[key] === 'string') {
+//       parameters = parameters + employee[key] + ', ';
+//     }
+//   }
+//   console.log(parameters);
+//   return parameters;
+// }
 
 function addEmployeePromise(employee) {
   return new Promise( (resolve, reject) => {
     console.log('Adding new employee...');
+
     var spStr = "exec ttAdmin.AddEmployee " + "'" + employee.EmployeeFirstName + "', '" + employee.EmployeeLastName + "', '" + employee.EmployeePosition + "', " + employee.EmployeeRate + ", " + employee.EmployeeCompanyID + ";"
     console.log(spStr);
     var request = new Request(
@@ -201,7 +204,7 @@ function readPromise() {
 
 // Express app and Authentication
 const app = express();
-app.use(express.static('./build'));
+// app.use(express.static('./build'));
 
 const checkJwt = jwt({
     // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
@@ -234,7 +237,6 @@ app.use(function(req, res, next) {
 app.get('/', function(req, res) {
     res.status(200).send('HELLLO WORLD');
 })
-var info = {};
 
 app.post('/api/employee/add', checkJwt, jwtAuthz(['write:info']), function(req, res) {
   var employee = req.body;
@@ -265,12 +267,6 @@ app.get('/api/employees', checkJwt, jwtAuthz(['read:info']), function(req, res) 
       res.send(info)
     });
     
-})
-
-app.post('/api/info', checkJwt, jwtAuthz(['write:info']), function(req, res) {
-    info = req.body;
-
-    res.json(info);
 })
 
 module.exports = app;
