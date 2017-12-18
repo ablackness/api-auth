@@ -236,6 +236,7 @@ var info = {};
 
 app.post('/api/employee/add', checkJwt, jwtAuthz(['write:info']), function(req, res) {
   var employee = req.body;
+  console.log(employee);
   var addPromise = addEmployeePromise(employee);
 
   addPromise.then( id => {
