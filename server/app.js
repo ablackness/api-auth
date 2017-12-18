@@ -204,7 +204,7 @@ function readPromise() {
 
 // Express app and Authentication
 const app = express();
-// app.use(express.static('./build'));
+app.use(express.static('./build'));
 
 const checkJwt = jwt({
     // Dynamically provide a signing key based on the kid in the header and the singing keys provided by the JWKS endpoint.
