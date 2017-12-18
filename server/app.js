@@ -32,6 +32,65 @@ connection.on('connect', function(err) {
   }
 });
 
+function stringifyEmployeeParameters(employee) {
+  var parameters = '';
+  for (key in employee) {
+    parameters = parameters + employee[key] + ' ';
+  }
+  console.log(parameters);
+  return parameters;
+}
+
+function addEmployeePromise(employee) {
+  return new Promise ( (resolve, reject) => {
+
+    var request = new Request(
+      'exec ttAdmin.addEmployee ' + stringifyEmployeeParameters(employee) + ';',
+      function(err, rowCount, rows) {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log(rowCount + ' row(s) returned');
+            console.log(null);
+        }
+        });
+      })
+
+      var requestPromise = new Promise ( (res, rej) => {
+        var results = [];
+        var result = {}
+        request.on('row', function(columns) {
+          console.log(columns);
+          var j;
+          columns.forEach(function(column, i) {
+              j = i;
+              if (column.value === null) {
+                  console.log('NULL');
+              } else {
+                  // result += column.value + " ";
+                  result[column.metadata.colName] = column.value;
+              }
+          });
+          console.log(result);
+          results.push(result);
+          result = {};
+          console.log(results);
+          if (j === columns.length - 1) {
+            res(results);
+          }
+        });
+        
+      })
+
+      requestPromise.then( info => {
+        console.log('request promise',info);
+        resolve(info);
+      })
+      
+      // Execute SQL statement
+      connection.execSql(request);     
+}
+
 function employeeByIdPromise(id) {
   return new Promise( (resolve, reject) => {
     console.log('Getting employee by ID...');
@@ -174,6 +233,17 @@ app.get('/', function(req, res) {
     res.status(200).send('HELLLO WORLD');
 })
 var info = {};
+
+app.post('/api/employee/add', checkJwt, jwtAuthz(['write:info']), function(req, res) {
+  var employee = req.body;
+  var addPromise = addEmployeePromise(employee);
+
+  addPromise.then( id => {
+    console.log(id);
+    res.send(id);
+  })
+  
+})
 
 app.get('/api/employee/:id', checkJwt, jwtAuthz(['read:info']), function(req, res) {
   var employeePromise = employeeByIdPromise(req.params.id);
