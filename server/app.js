@@ -42,28 +42,25 @@ function stringifyEmployeeParameters(employee) {
 }
 
 function addEmployeePromise(employee) {
-  return new Promise ( (resolve, reject) => {
-    console.log('inthe add employee promise function')
+  return new Promise( (resolve, reject) => {
+    console.log('Getting employee by ID...');
+
     var request = new Request(
-      //'exec ttAdmin.AddEmployee',// + "'m', 'b', 'test', 9.28, 1;",//stringifyEmployeeParameters(employee) + ';',
-      'exec ttAdmin.GetEmployeeByID 4;',
+      'exec ttAdmin.GetEmployeeByID ' + '4' + ';',
       function(err, rowCount, rows) {
-        console.log('got into the add request function');
         if (err) {
             console.log(err);
         } else {
             console.log(rowCount + ' row(s) returned');
             console.log(null);
         }
-        });
-      })
-      console.log('creating new request promise');
+      });
+
       var requestPromise = new Promise ( (res, rej) => {
         var results = [];
         var result = {}
-        console.log('inside request promise');
         request.on('row', function(columns) {
-          console.log('receieved columns, inside loop', columns);
+          console.log(columns);
           var j;
           columns.forEach(function(column, i) {
               j = i;
@@ -91,7 +88,8 @@ function addEmployeePromise(employee) {
       })
       
       // Execute SQL statement
-      connection.execSql(request);     
+      connection.execSql(request);
+  })
 }
 
 function employeeByIdPromise(id) {
