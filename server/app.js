@@ -240,11 +240,11 @@ app.get('/', function(req, res) {
 
 app.post('/api/employee/add', checkJwt, jwtAuthz(['write:info']), function(req, res) {
   var employee = req.body;
-  console.log(employee);
+  // console.log(employee);
   var addPromise = addEmployeePromise(employee);
 
   addPromise.then( id => {
-    console.log(id);
+    // console.log(id);
     res.send(id);
   })
   
@@ -254,7 +254,7 @@ app.get('/api/employee/:id', checkJwt, jwtAuthz(['read:info']), function(req, re
   var employeePromise = employeeByIdPromise(req.params.id);
 
   employeePromise.then( e => {
-    console.log(e);
+    // console.log(e);
     res.send(e);
   })
 })
@@ -263,7 +263,7 @@ app.get('/api/employees', checkJwt, jwtAuthz(['read:info']), function(req, res) 
     var infoPromise = readPromise();
 
     infoPromise.then( info => {
-      console.log('readPromise',info);
+      // console.log('readPromise',info);
       res.send(info)
     });
     
