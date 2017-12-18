@@ -45,7 +45,7 @@ function addEmployeePromise(employee) {
   return new Promise ( (resolve, reject) => {
     console.log('inthe add employee promise function')
     var request = new Request(
-      'exec ttAdmin.AddEmployee ' + "'m', 'b', 'test', 9.28, 1;",//stringifyEmployeeParameters(employee) + ';',
+      'exec ttAdmin.AddEmployee',// + "'m', 'b', 'test', 9.28, 1;",//stringifyEmployeeParameters(employee) + ';',
       function(err, rowCount, rows) {
         console.log('got into the add request function');
         if (err) {
