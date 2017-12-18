@@ -46,7 +46,7 @@ function addEmployeePromise(employee) {
     console.log('Getting employee by ID...');
 
     var request = new Request(
-      'exec ttAdmin.AddEmployee;',
+      "exec ttAdmin.AddEmployee 'm', 'b', 'test', 9.28, 1;",
       function(err, rowCount, rows) {
         if (err) {
             console.log(err);
