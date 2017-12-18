@@ -43,10 +43,11 @@ function stringifyEmployeeParameters(employee) {
 
 function addEmployeePromise(employee) {
   return new Promise ( (resolve, reject) => {
-
+    console.log('inthe add employee promise function')
     var request = new Request(
       'exec ttAdmin.AddEmployee ' + "'m', 'b', 'test', 9.28, 1;",//stringifyEmployeeParameters(employee) + ';',
       function(err, rowCount, rows) {
+        console.log('got into the add request function');
         if (err) {
             console.log(err);
         } else {
@@ -55,12 +56,13 @@ function addEmployeePromise(employee) {
         }
         });
       })
-
+      console.log('creating new request promise');
       var requestPromise = new Promise ( (res, rej) => {
         var results = [];
         var result = {}
+        console.log('inside request promise');
         request.on('row', function(columns) {
-          console.log(columns);
+          console.log('receieved columns, inside loop', columns);
           var j;
           columns.forEach(function(column, i) {
               j = i;
