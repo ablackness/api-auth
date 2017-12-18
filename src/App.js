@@ -86,7 +86,15 @@ class Home extends Component {
   
   makePostCall() {
     console.log('post');
-    axios.post('https://ab-auth0-test.herokuapp.com/api/info', {name: 'something else', time: 'later'}, {headers: {Authorization: 'Bearer ' + this.state.access_token}})
+    var employee = {
+      firstName: 'first', 
+      lastName: 'last', 
+      position: 'Prez',
+      rate: '100',
+      companyId: 1
+    }
+
+    axios.post('https://ab-auth0-test.herokuapp.com/employee/add', employee, {headers: {Authorization: 'Bearer ' + this.state.access_token}})
     .then(response => {
       console.log(response);
     })
