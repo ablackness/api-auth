@@ -44,7 +44,7 @@ function stringifyEmployeeParameters(employee) {
 function addEmployeePromise(employee) {
   return new Promise( (resolve, reject) => {
     console.log('Adding new employee...');
-
+    console.log("exec ttAdmin.AddEmployee " + "'" + employee.first_name + "', '" + employee.last_name + "', '" + employee.position + "', " + employee.rate + ", " + employee.company_id + ";");
     var request = new Request(
       "exec ttAdmin.AddEmployee " + "'" + employee.first_name + "', '" + employee.last_name + "', '" + employee.position + "', " + employee.rate + ", " + employee.company_id + ";",
       function(err, rowCount, rows) {
